@@ -5,10 +5,6 @@
 
 import requests
 import sys
-import pprint
-
-
-search = 'Москва Лондон'
 
 
 # Search flights from...to
@@ -50,7 +46,6 @@ def search_flights(origin='Москва', destination='Лондон', counts=10)
 
 
 if __name__ == '__main__':
-
     try:
         # Parse the arguments
         origin = sys.argv[1]
