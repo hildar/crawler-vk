@@ -4,68 +4,58 @@
 выбрать свои. Главный критерий выбора: динамически загружаемые товары
 """
 
-
-import time
+from time import sleep
+import re
 from selenium import webdriver  # Основной элемент
-from selenium.webdriver.common.keys import Keys  # Клавиши клавиатуры
 from pymongo import MongoClient
 
 
 def parse_site_with_selenium():
     driver = webdriver.Chrome()
     driver.get('https://www.mvideo.ru')
-    time.sleep(5)
-    print(driver.page_source)
-
-    bestseller_wrapper = driver.find_element_by_class_name('gallery-layout sel-hits-block ')
-    bestseller = bestseller_wrapper.find_elements_by_class_name('gallery-list-item')
-    # bestseller = driver.find_elements_by_class_name('gallery-list-item')
-    # bestseller = driver.find_elements_by_tag_name('h4')
-
-    print(f'length list of bestseller: {len(bestseller)}')
-    print(bestseller)
+    sleep(2)
     products = []
-    count = 0
-    for item in bestseller:
-        print(f'count = {count}')
-        count += 1
-        # print(driver.page_source)
-        # spam = item.find_element_by_class_name('sel-product-tile-title')
-        # spam = item.find_element_by_css_selector('a.sel-product-tile-title')
-        # spam = item.find_element_by_xpath('/a[@class="sel-product-tile-title"]')
-        spam = item.find_element_by_tag_name('a')
-        title = spam.text
-        url = spam.get_attribute('href')
-        products.append({'title': title,
-                         'url': url})
-
+    while True:
+        bestseller_wrapper = driver.find_element_by_css_selector('.gallery-layout.sel-hits-block ')  # Ищет по сочетанию
+        bestseller = bestseller_wrapper.find_elements_by_class_name('gallery-list-item')[:4]
+        for item in bestseller:
+            spam = item.find_element_by_class_name('sel-product-tile-title')
+            title = spam.text
+            url = spam.get_attribute('href')
+            price = re.findall('[\\d]+\\.[\\d]{2}', spam.get_attribute('data-product-info'))[0]
+            products.append({'title': title,
+                             'price': price,
+                             'url': url})
+        button = bestseller_wrapper.find_element_by_css_selector('.next-btn.sel-hits-button-next')
+        if button.get_attribute('class') != 'next-btn sel-hits-button-next disabled':
+            button.click()
+            sleep(3)  # waiting for it to load
+        else:
+            break
     for prod in products:
-        print(prod)
-
+        for k, v in prod.items():
+            print(f'{k}: {v}')
+        print()
     driver.quit()
     return products
 
 
-parse_site_with_selenium()
-
-
-def client_mongo():
+def client_mongo(db_name: str, collection_name: str):
     client = MongoClient('mongodb://127.0.0.1:27017')
-    data_base = client['db_mail_letters']  # db name
-    mail_letters = data_base.mail_letters  # collection name
-    return mail_letters
+    data_base = client[db_name]  # db name
+    collect_name = data_base[collection_name] # collection name
+    return collect_name
 
 
-def save_to_mongo(letters: list):
-    mail_letters = client_mongo()
+def save_to_mongo(list_to_save_db: list, unique_key: str, db_name: str, collection_name: str):
+    collection = client_mongo(db_name, collection_name)
     count = 0
-    for letter in letters:
-        spam = mail_letters.find_one({'content': letter['content']})
+    for item in list_to_save_db:
+        spam = collection.find_one({unique_key: item[unique_key]})
         if spam is None:
-            mail_letters.insert_one(letter)
+            collection.insert_one(item)
             count += 1
-    print(f'Added {count} records. Collection "{mail_letters.name}" has {mail_letters.count_documents({})} letters')
+    print(f'Added {count} records. Collection "{collection.name}" has {collection.count_documents({})} items.')
 
 
-# save_to_mongo(parse_site_with_selenium())
-
+save_to_mongo(parse_site_with_selenium(), 'url', 'db_mvideo_bestseller', 'bestseller')
