@@ -31,7 +31,6 @@ def get_ads():
     soup = BeautifulSoup(response, 'html.parser')
     adverts = soup.find_all('div', {'class': 'description item_table-description'})
     ads = []
-    spam = dict
     for advert in adverts:
         spam = {
             'title': advert.find('h3').text[2:-2],  # A slice is need for remove excess characters
