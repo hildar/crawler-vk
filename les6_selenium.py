@@ -39,24 +39,6 @@ def parse_site_with_selenium():
     driver.quit()
     return letters_all
 
-#
-# def client_mongo():
-#     client = MongoClient('mongodb://127.0.0.1:27017')
-#     data_base = client['db_mail_letters']  # db name
-#     mail_letters = data_base.mail_letters  # collection name
-#     return mail_letters
-#
-#
-# def save_to_mongo(letters: list):
-#     mail_letters = client_mongo()
-#     count = 0
-#     for letter in letters:
-#         spam = mail_letters.find_one({'content': letter['content']})
-#         if spam is None:
-#             mail_letters.insert_one(letter)
-#             count += 1
-#     print(f'Added {count} records. Collection "{mail_letters.name}" has {mail_letters.count_documents({})} letters')
-
 
 def client_mongo(db_name: str, collection_name: str):
     client = MongoClient('mongodb://127.0.0.1:27017')
