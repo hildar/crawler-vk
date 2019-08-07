@@ -16,33 +16,29 @@ def search_flights(origin='Москва', destination='Лондон', counts=10)
         print('No connection to site: travelpayouts.com')
         exit(1)
 
+    # Assign IATA parameters for second request
+    iata_data = req.json()
+    flight_params = {
+        'origin': iata_data['origin']['iata'],
+        'destination': iata_data['destination']['iata'],
+        'one_way': 'true'
+    }
     try:
-        # Assign IATA parameters for second request
-        iata_data = req.json()
-        flight_params = {
-            'origin': iata_data['origin']['iata'],
-            'destination': iata_data['destination']['iata'],
-            'one_way': 'true'
-        }
         # Request for get the min-price of flights
         req2 = requests.get("http://min-prices.aviasales.ru/calendar_preload", params=flight_params)
     except ConnectionError:
         print('No connection to site: min-prices.aviasales.ru')
         exit(1)
 
-    try:
-        # Print format flights
-        data = req2.json()
-        tickets = data['best_prices'][:counts]
-        for ticket in tickets:
-            print(f"Пункт отправления: {iata_data['origin']['name']} ({ticket['origin']})")
-            print(f"Пункт назначения: {iata_data['destination']['name']} ({ticket['destination']})")
-            print(f"Дата вылета: {ticket['depart_date']}")
-            print(f"Цена билета: {ticket['value']}")
-            print(f"Поставщик услуги: {ticket['gate']}\n")
-    except Exception:
-        print(Exception)
-        exit(1)
+    # Print format flights
+    data = req2.json()
+    tickets = data['best_prices'][:counts]
+    for ticket in tickets:
+        print(f"Пункт отправления: {iata_data['origin']['name']} ({ticket['origin']})")
+        print(f"Пункт назначения: {iata_data['destination']['name']} ({ticket['destination']})")
+        print(f"Дата вылета: {ticket['depart_date']}")
+        print(f"Цена билета: {ticket['value']}")
+        print(f"Поставщик услуги: {ticket['gate']}\n")
 
 
 if __name__ == '__main__':

@@ -7,6 +7,7 @@
 #
 # 2) Доработать приложение таким образом, чтобы можно было искать разработчиков на разные языки
 # программирования (Например Python, Java, C++)
+
 """
 This python file get the vacancies from hh.ru
 """
@@ -15,16 +16,15 @@ import requests
 from lxml import html
 
 
-# Get vacancy from hh.ru
 def get_vacancy(url: str, params: dict, headers: dict):
     """
-    For emulate real human behavior need 'headers' and run method requests.Session()
+    Get vacancy from hh.ru
     :param url: urls
     :param params: params of get request of url
     :param headers: headers need to emulate homo sapiens
-    :return: three lists - links, vacancies, salaries
+    :return: three lists - links, vacancies, salaries (1 position, 20 vacancies)
     """
-    session = requests.Session()
+    # For emulate real human behavior need to keep 'headers'
     # Try to request on site
     try:
         req = requests.get(url, params=params, headers=headers)
@@ -47,14 +47,21 @@ def get_vacancy(url: str, params: dict, headers: dict):
         # Get salaries
         spam = divs[1].xpath(f'div[{i}]//div[contains(@data-qa, "vacancy-serp__vacancy-compensation")]/text()')
         if i not in [7, 8, 15, 16]:
-            salaries.append(spam[0]) if spam else salaries.append('--')
+            salaries.append(spam[0] if spam else '--')
     if req.status_code == 200:
         return links, vacancies, salaries
     print('Error: status code != 200')
 
 
-# Get some pages for one position
 def get_some_pages(url: str, params: dict, headers: dict, count: int):
+    """
+    Get some pages for one position
+    :param url: urls
+    :param params: params of get request of url
+    :param headers: headers need to emulate homo sapiens
+    :param count: count of parsing pages
+    :return: three lists - links, vacancies, salaries (1 position, '20 * count' vacancies)
+    """
     pages = [i for i in range(count)]
     links, vacancies, salaries = [], [], []
     for i in pages:
@@ -66,8 +73,18 @@ def get_some_pages(url: str, params: dict, headers: dict, count: int):
     return links, vacancies, salaries
 
 
-# Get vacancy for other positions
 def get_positions(url: str, params: dict, headers: dict, vacancy: list, count=3):
+    """
+    Get vacancy for other positions
+    :param url: urls
+    :param params: params of get request of url
+    :param headers: headers need to emulate homo sapiens
+    :param vacancy: list of vacancies looking for
+    :param count: count of parsing pages
+    :return: three lists of lists - links, vacancies and salaries
+    (e.g.: [[links 1], [links 2], [links 3], ...],  [[vacancies 1], [vacancies 2], [vacancies 3], ...],
+    [[salaries 1], [salaries 2], [salaries 3], ...])
+    """
     links, vacancies, salaries = [], [], []
     for vac in vacancy:
         params['text'] = vac
@@ -78,8 +95,10 @@ def get_positions(url: str, params: dict, headers: dict, vacancy: list, count=3)
     return links, vacancies, salaries
 
 
-# Main function to print vacancies
 def print_vacancy():
+    """
+    # Main function for print vacancies
+    """
     # For emulate real human behavior need 'headers' and run method requests.Session()
     headers = {'accept': '*/*',
                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36'
