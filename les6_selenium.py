@@ -20,22 +20,22 @@ def parse_site_with_selenium():
     elem.send_keys(Keys.RETURN)
     sleep(8)  # Download page maybe so long
     letters_class_name = 'llc js-tooltip-direction_letter-bottom js-letter-list-item llc_normal'
-    len_letters = len(driver.find_elements_by_xpath(f'//a[contains(@class, "{letters_class_name}")]'))
+    letters = driver.find_elements_by_xpath(f'//a[contains(@class, "{letters_class_name}")]')
     letters_all = []
-    for i in range(len_letters):
-        letters = driver.find_elements_by_xpath(f'//a[contains(@class, "{letters_class_name}")]')
-        letters[i].click()
+    letters_links = []
+    for letter in letters:
+        letters_links.append(letter.get_attribute('href'))
+    for letter in letters_links:
+        driver.get(letter)
         sleep(3)
-        letter_author = driver.find_element_by_class_name('letter__contact-item').text
-        letter_date = driver.find_element_by_class_name('letter__date').text
-        letter_topic = driver.find_element_by_class_name('thread__subject').text
-        letter_content = driver.find_element_by_class_name('letter-body').text
-        letters_all.append({'author': letter_author,
-                            'date': letter_date,
-                            'topic': letter_topic,
-                            'content': letter_content})
-        driver.back()
-        sleep(3)
+        author = driver.find_element_by_class_name('letter__contact-item').text
+        date = driver.find_element_by_class_name('letter__date').text
+        topic = driver.find_element_by_class_name('thread__subject').text
+        content = driver.find_element_by_class_name('letter-body').text
+        letters_all.append({'author': author,
+                            'date': date,
+                            'topic': topic,
+                            'content': content})
     driver.quit()
     return letters_all
 
