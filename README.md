@@ -20,6 +20,8 @@ Lesson 5. MongoDB.
 Lesson 6. Selenium for Python. Parse a dinamic and close data. 
 * [HW task 1 - Parsing an inbox letters of mail.ru.](https://github.com/hildar/parsing/blob/master/les6_selenium.py) 
 * [HW task 2 - Parsing bestsellers of mvideo.ru.](https://github.com/hildar/parsing/blob/master/les6_selenium_mvideo.py)
+* [Other solutions for task 1. Add headless mode.](https://github.com/hildar/parsing/blob/master/les6_selenium_headless.py)
+* [Other solutions for task 2. Add headless mode.](https://github.com/hildar/parsing/blob/master/les6_selenium_mvideo_headless.py)
 
 Lesson 7. Open data.
 
