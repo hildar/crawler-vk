@@ -51,7 +51,7 @@ def parse_site_with_selenium():
 def client_mongo(db_name: str, collection_name: str):
     client = MongoClient('mongodb://127.0.0.1:27017')
     data_base = client[db_name]  # db name
-    collect_name = data_base[collection_name] # collection name
+    collect_name = data_base[collection_name]  # collection name
     return collect_name
 
 
