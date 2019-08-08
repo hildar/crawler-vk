@@ -27,7 +27,7 @@ def parse_site_with_selenium():
         letters_links.append(letter.get_attribute('href'))
     for letter in letters_links:
         driver.get(letter)
-        sleep(1)
+        sleep(3)
         author = driver.find_element_by_class_name('letter__contact-item').text
         date = driver.find_element_by_class_name('letter__date').text
         topic = driver.find_element_by_class_name('thread__subject').text
