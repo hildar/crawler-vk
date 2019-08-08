@@ -7,18 +7,21 @@
 from time import sleep
 from selenium import webdriver  # Основной элемент
 from selenium.webdriver.common.keys import Keys  # Клавиши клавиатуры
+from selenium.webdriver.chrome.options import Options
 from pymongo import MongoClient
 
 
 def parse_site_with_selenium():
-    driver = webdriver.Chrome()
+    options = Options()
+    options.headless = True
+    driver = webdriver.Chrome(options=options)
     driver.get('https://mail.ru')
     elem = driver.find_element_by_id('mailbox:login')
     elem.send_keys('test-bender@mail.ru')
     elem = driver.find_element_by_id('mailbox:password')
     elem.send_keys('youpieceofmeat')
     elem.send_keys(Keys.RETURN)
-    sleep(8)  # Download page maybe so long
+    sleep(6)  # Download page maybe so long
     letters_class_name = 'llc js-tooltip-direction_letter-bottom js-letter-list-item llc_normal'
     letters = driver.find_elements_by_xpath(f'//a[contains(@class, "{letters_class_name}")]')
     letters_all = []
