@@ -13,7 +13,7 @@ from pymongo import MongoClient
 
 def parse_site_with_selenium():
     options = Options()
-    options.headless = True
+    options.headless = True  # add headless mode
     driver = webdriver.Chrome(options=options)
     driver.get('https://mail.ru')
     elem = driver.find_element_by_id('mailbox:login')
