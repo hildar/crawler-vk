@@ -15,27 +15,33 @@ def parse_site_with_selenium():
     driver.get('https://www.mvideo.ru')
     sleep(2)
     products = []
-    while True:
-        bestseller_wrapper = driver.find_element_by_css_selector('.gallery-layout.sel-hits-block ')  # Ищет по сочетанию
-        bestseller = bestseller_wrapper.find_elements_by_class_name('gallery-list-item')[:4]
-        for item in bestseller:
-            spam = item.find_element_by_class_name('sel-product-tile-title')
-            title = spam.text
-            url = spam.get_attribute('href')
-            price = re.findall('[\\d]+\\.[\\d]{2}', spam.get_attribute('data-product-info'))[0]
-            products.append({'title': title,
-                             'price': price,
-                             'url': url})
-        button = bestseller_wrapper.find_element_by_css_selector('.next-btn.sel-hits-button-next')
-        if button.get_attribute('class') != 'next-btn sel-hits-button-next disabled':
-            button.click()
-            sleep(3)  # waiting for it to load
-        else:
-            break
-    for prod in products:
-        for k, v in prod.items():
-            print(f'{k}: {v}')
-        print()
+    # Block "try" need for webdriver() permanently closed self process in OS system if there is any Exception.
+    # This is a known unsolved issue:
+    # https://github.com/webdriverio-boneyard/wdio-selenium-standalone-service/issues/28
+    try:
+        while True:
+            bestseller_wrapper = driver.find_element_by_css_selector('.gallery-layout.sel-hits-block ')
+            bestseller = bestseller_wrapper.find_elements_by_class_name('gallery-list-item')[:4]
+            for item in bestseller:
+                spam = item.find_element_by_class_name('sel-product-tile-title')
+                title = spam.text
+                url = spam.get_attribute('href')
+                price = re.findall('[\\d]+\\.[\\d]{2}', spam.get_attribute('data-product-info'))[0]
+                products.append({'title': title,
+                                 'price': price,
+                                 'url': url})
+            button = bestseller_wrapper.find_element_by_css_selector('.next-btn.sel-hits-button-next')
+            if button.get_attribute('class') != 'next-btn sel-hits-button-next disabled':
+                button.click()
+                sleep(3)  # waiting for it to load
+            else:
+                break
+        for prod in products:
+            for key, value in prod.items():
+                print(f'{key}: {value}')
+            print()
+    except Exception as e:
+        print(e)
     driver.quit()
     return products
 

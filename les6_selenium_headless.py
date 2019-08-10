@@ -16,29 +16,35 @@ def parse_site_with_selenium():
     options.headless = True
     driver = webdriver.Chrome(options=options)
     driver.get('https://mail.ru')
-    elem = driver.find_element_by_id('mailbox:login')
-    elem.send_keys('test-bender@mail.ru')
-    elem = driver.find_element_by_id('mailbox:password')
-    elem.send_keys('youpieceofmeat')
-    elem.send_keys(Keys.RETURN)
-    sleep(6)  # Download page maybe so long
-    letters_class_name = 'llc js-tooltip-direction_letter-bottom js-letter-list-item llc_normal'
-    letters = driver.find_elements_by_xpath(f'//a[contains(@class, "{letters_class_name}")]')
     letters_all = []
-    letters_links = []
-    for letter in letters:
-        letters_links.append(letter.get_attribute('href'))
-    for letter in letters_links:
-        driver.get(letter)
-        sleep(1)
-        author = driver.find_element_by_class_name('letter__contact-item').text
-        date = driver.find_element_by_class_name('letter__date').text
-        topic = driver.find_element_by_class_name('thread__subject').text
-        content = driver.find_element_by_class_name('letter-body').text
-        letters_all.append({'author': author,
-                            'date': date,
-                            'topic': topic,
-                            'content': content})
+    # Block "try" need for webdriver() permanently closed self process in OS system if there is any Exception.
+    # This is a known unsolved issue:
+    # https://github.com/webdriverio-boneyard/wdio-selenium-standalone-service/issues/28
+    try:
+        elem = driver.find_element_by_id('mailbox:login')
+        elem.send_keys('test-bender@mail.ru')
+        elem = driver.find_element_by_id('mailbox:password')
+        elem.send_keys('youpieceofmeat')
+        elem.send_keys(Keys.RETURN)
+        sleep(6)  # Download page maybe so long
+        letters_class_name = 'llc js-tooltip-direction_letter-bottom js-letter-list-item llc_normal'
+        letters = driver.find_elements_by_xpath(f'//a[contains(@class, "{letters_class_name}")]')
+        letters_links = []
+        for letter in letters:
+            letters_links.append(letter.get_attribute('href'))
+        for letter in letters_links:
+            driver.get(letter)
+            sleep(1)
+            author = driver.find_element_by_class_name('letter__contact-item').text
+            date = driver.find_element_by_class_name('letter__date').text
+            topic = driver.find_element_by_class_name('thread__subject').text
+            content = driver.find_element_by_class_name('letter-body').text
+            letters_all.append({'author': author,
+                                'date': date,
+                                'topic': topic,
+                                'content': content})
+    except Exception as e:
+        print(e)
     driver.quit()
     return letters_all
 
