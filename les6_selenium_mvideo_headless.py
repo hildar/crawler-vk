@@ -28,7 +28,7 @@ def parse_site_with_selenium():
     # https://github.com/webdriverio-boneyard/wdio-selenium-standalone-service/issues/28
     try:
         while True:
-            bestseller_wrapper = driver.find_element_by_css_selector('.2gallery-layout.sel-hits-block ')
+            bestseller_wrapper = driver.find_element_by_css_selector('.gallery-layout.sel-hits-block ')
             bestseller = bestseller_wrapper.find_elements_by_class_name('gallery-list-item')[:4]
             for item in bestseller:
                 spam = item.find_element_by_class_name('sel-product-tile-title')
