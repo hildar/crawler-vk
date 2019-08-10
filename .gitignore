@@ -124,3 +124,4 @@ dmypy.json
 .pyre/
 /test.py
 /test2.py
+/opendata.csv
