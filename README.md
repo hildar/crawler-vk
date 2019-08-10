@@ -24,5 +24,6 @@ Lesson 6. Selenium for Python. Parse a dinamic and close data.
 * [Other solutions for task 2. Add headless mode.](https://github.com/hildar/parsing/blob/master/les6_selenium_mvideo_headless.py)
 
 Lesson 7. Open data.
+* [HW - Work with opendata of Sberbank](https://github.com/hildar/parsing/blob/master/les7_open_data.py)
 
 Lesson 8. Work with data.
