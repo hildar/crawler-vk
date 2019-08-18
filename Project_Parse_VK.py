@@ -34,7 +34,7 @@ def get_data(method, params_method, offset=0, count=100, koeficient=1):
     max_value = 100
     params = {
         # unique token is valid for a day
-        'access_token': 'your_access_token',
+        'access_token': 'de8f9c35b71563ce39ca12c75301aa7ccdf3ba5ead6bfa15aca87e143da550bfbdee1d1962d4eceda272c',
         'v': 5.101,
         'count': count,
         'offset': offset,
