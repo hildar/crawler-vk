@@ -2,6 +2,12 @@
 
 ## Methods of parse and prepare data in net.
 
+### Course project:
+* Topic: Parser social net vk.com. Get info about posts who liked and reposted this.
+* Code name: **Big bro**.
+* Target: Social research. Research trends.
+* [HW project - Parsing of vk.com.](https://github.com/hildar/parsing/blob/master/Project_Parse_VK.py)
+
 Lesson 1. Base of a Client-Server interaction.
 
 Lesson 2. Requests, APIs, base of a parse. 
