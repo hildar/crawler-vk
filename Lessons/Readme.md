@@ -5,7 +5,7 @@
 Lesson 1. Base of a Client-Server interaction.
 
 Lesson 2. Requests, APIs, base of a parse. 
-* [HW task 1 - Parsing of aviasales.ru.](https://github.com/hildar/parsing/blob/master/L2_aviasales.py) 
+* [HW task 1 - Parsing of aviasales.ru.](https://github.com/hildar/parsing/blob/master/Lessons/L2_aviasales.py) 
 * [HW task 2 - Parsing of wiki.ru.](https://github.com/hildar/parsing/blob/master/L2_parse_wiki.py)
 
 Lesson 3. Parse of HTML. 
