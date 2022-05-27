@@ -20,8 +20,8 @@ Web crawler scanning social net vk.com via API (for example one user's posts kno
 
 Then save to MongoDB information about users:
 
-<img src="img/users.png" alt="users" width="500"/>
+<img src="img/users.png" alt="users" width="550"/>
 
 And groups:
 
-<img src="img/clubs.png" alt="clubs" width="500"/>
+<img src="img/clubs.png" alt="clubs" width="550"/>
