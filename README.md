@@ -3,7 +3,7 @@
 ## Web crawler for parsing vk.com
 
 ### Stack:
-* API: requests
+* API: requests, API vk.com
 * DataBase: MongoDB
 
 ### Task:
@@ -14,7 +14,7 @@
 
 ### About
 
-Web crawler scan social net vk.com (for example one user's posts known as BadComedian) and parse people who has liked and reposted this one: 
+Web crawler scanning social net vk.com via API (for example one user's posts known as BadComedian) and parse people who has liked and reposted this one: 
 
 <img src="img/logs.png" alt="logs" width="700"/>
 
