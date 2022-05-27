@@ -9,6 +9,7 @@ import requests
 from pymongo import MongoClient
 
 
+# connect to MongoDB
 def client_mongodb(db_name: str, collection_name: str):
     client = MongoClient('mongodb://127.0.0.1:27017')
     data_base = client[db_name]  # db name
@@ -16,6 +17,7 @@ def client_mongodb(db_name: str, collection_name: str):
     return collect_name
 
 
+# save users or clubs to MongoDB
 def save_to_mongodb(list_to_save_db: list, unique_key: str, db_name: str, collection_name: str):
     collection = client_mongodb(db_name, collection_name)
     count = 0
@@ -25,6 +27,7 @@ def save_to_mongodb(list_to_save_db: list, unique_key: str, db_name: str, collec
     print(f'Added {count} records. Collection "{collection.name}" has {collection.count_documents({})} items.')
 
 
+# get posts, likes, comments from API vk.com
 def get_data(method, params_method, offset=0, count=100, koeficient=1):
     max_value = 100
     params = {
@@ -52,10 +55,12 @@ def get_data(method, params_method, offset=0, count=100, koeficient=1):
     return data
 
 
+# web crawler
 def parse_vk():
     id_badcomedian = -25557243
     params_badcomedian = {'owner_id': id_badcomedian}
     posts = get_data('wall.get', params_badcomedian, count=3)
+
     # Get likes and comments. Write this.
     for i, post in enumerate(posts):
         post_owner_id = post['owner_id']
@@ -77,11 +82,13 @@ def parse_vk():
         }
         comments = get_data('wall.getComments', params_get_comments, count=100)
         posts[i]['comments']['content'] = comments
+
     badcomedian = {
         'id_club': id_badcomedian,
         'posts': posts
     }
     save_to_mongodb([badcomedian], 'id_club', 'vk', 'clubs')
+
     # Get posts who is liked badcomedian posts
     users = []
     ids_likes = []
@@ -99,14 +106,17 @@ def parse_vk():
     save_to_mongodb(users, 'id_user', 'vk', 'users')
 
 
+# add users to DB who has reposted BadComedian
 def add_repost_users():
     clubs = client_mongodb('vk', 'clubs')
     cursor = clubs.find({})
     bad_posts = []
+
     for item in cursor:
         bad_posts = item['posts']
         break
     users = client_mongodb('vk', 'users')
+
     for i, post in enumerate(bad_posts):
         post_id = post['id']
         post_owner_id = post['owner_id']
@@ -129,6 +139,7 @@ def add_repost_users():
                     pass  # KeyError (Not posts this user)
         bad_posts[i]['reposts']['ids_reposts'] = repost_users
         print(f'Log: The post "wall{post_owner_id}_{post_id}" is reposted next users: {repost_users}')
+
     id_badcomedian = -25557243
     badcomedian = {
         'id_club': id_badcomedian,
@@ -137,6 +148,7 @@ def add_repost_users():
     save_to_mongodb([badcomedian], 'id_club', 'vk', 'clubs')
 
 
+# parse
 parse_vk()
 print()
 add_repost_users()
