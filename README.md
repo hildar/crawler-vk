@@ -20,8 +20,8 @@ Web crawler scan social net vk.com (for example one user's posts known as BadCom
 
 Then save to MongoDB information about users:
 
-<img src="img/users.png" alt="users" width="400"/>
+<img src="img/users.png" alt="users" width="500"/>
 
 And groups:
 
-<img src="img/clubs.png" alt="clubs" width="400"/>
+<img src="img/clubs.png" alt="clubs" width="500"/>
