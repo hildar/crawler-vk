@@ -1,6 +1,8 @@
-# BIG BRO
+# Web crawler for parsing vk.com
 
-## Web crawler for parsing vk.com
+## About
+
+Web crawler scanning social net vk.com via API (for example one user's posts known as BadComedian) and parse people who has liked and reposted this one.
 
 ### Stack:
 * API: requests, API vk.com
@@ -12,9 +14,7 @@
 * Target: Social research. Research trends.
 * Main project file: [Project_Parse_VK.py](https://github.com/hildar/parsing/blob/master/Project_Parse_VK.py)
 
-### About
-
-Web crawler scanning social net vk.com via API (for example one user's posts known as BadComedian) and parse people who has liked and reposted this one: 
+## Usage
 
 <img src="img/logs.png" alt="logs" width="700"/>
 
