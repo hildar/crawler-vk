@@ -2,7 +2,7 @@
 
 ## About
 
-Web crawler scanning social net vk.com via an API (for example, the posts of one user known as BadComedian) and collects data about the people who liked and reposted this post. Wrote this data to MongoDB database.
+Web crawler scanning social net vk.com via an **API** (for example, the posts of one user known as BadComedian) and collects data about the people who liked and reposted this post. Wrote this data to **MongoDB** database.
 
 
 ### Stack:
