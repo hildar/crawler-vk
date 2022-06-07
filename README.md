@@ -2,7 +2,8 @@
 
 ## About
 
-Web crawler scanning social net vk.com via API (for example one user's posts known as BadComedian) and parse people who has liked and reposted this one.
+Web crawler scanning social net vk.com via an API (for example, the posts of one user known as BadComedian) and collects data about the people who liked and reposted this post. Wrote this data to MongoDB database.
+
 
 ### Stack:
 * API: requests, API vk.com
